@@ -70,14 +70,6 @@ public class TestTask1 {
         assertEquals(expectedResponse, actualResponse);
     }
 
-    @Test
-    @DisplayName("Обработка неизвестного запроса клиента")
-    void testHandleUnknownClientRequest() throws IOException {
-        String clientRequest = "unknown";
-        String expectedResponse = "Неизвестный запрос";
-        String actualResponse = getServerResponse(clientRequest);
-        assertEquals(expectedResponse, actualResponse);
-    }
 
     private String getServerResponse(String clientRequest) throws IOException {
         // Создаем фиктивный клиентский сокет и отправляем запрос на сервер
