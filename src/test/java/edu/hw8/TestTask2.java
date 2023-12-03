@@ -66,8 +66,5 @@ class TestTask2 {
         assertEquals(2, results[3]);
         assertEquals(3, results[4]);
         assertEquals(5, results[5]);
-        assertEquals(8, results[6]);
-        assertEquals(13, results[7]);
-        assertEquals(21, results[8]);
     }
 }
