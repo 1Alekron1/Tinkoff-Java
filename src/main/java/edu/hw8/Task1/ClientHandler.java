@@ -19,10 +19,14 @@ class ClientHandler implements Runnable {
 
             byte[] buffer = new byte[MAX_BUFFER];
             int bytesRead = inputStream.read(buffer);
-            String request = new String(buffer, 0, bytesRead);
+            if (bytesRead > 0) {
+                String request = new String(buffer, 0, bytesRead);
+                String response = getResponse(request);
+                outputStream.write(response.getBytes());
+            } else {
 
-            String response = getResponse(request);
-            outputStream.write(response.getBytes());
+                clientSocket.close();
+            }
 
         } catch (IOException ignored) {
         }
