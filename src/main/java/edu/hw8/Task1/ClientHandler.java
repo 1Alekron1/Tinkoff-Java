@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 class ClientHandler implements Runnable {
     public static final int MAX_BUFFER = 1024;
+    private final static Logger LOGGER = LogManager.getLogger();
     private Socket clientSocket;
 
     ClientHandler(Socket clientSocket) {
@@ -24,11 +27,10 @@ class ClientHandler implements Runnable {
                 String response = getResponse(request);
                 outputStream.write(response.getBytes());
             } else {
-
                 clientSocket.close();
             }
-
-        } catch (IOException ignored) {
+        } catch (IOException e) {
+            LOGGER.info(e.getStackTrace());
         }
     }
 

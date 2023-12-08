@@ -35,6 +35,7 @@ public class QuoteClient {
             LOGGER.info("Ответ сервера: " + response);
 
         } catch (IOException e) {
+            LOGGER.info(e.getStackTrace());
         }
     }
 }

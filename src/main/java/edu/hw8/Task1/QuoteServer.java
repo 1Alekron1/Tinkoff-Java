@@ -25,7 +25,8 @@ public class QuoteServer {
                 Socket clientSocket = serverSocket.accept();
                 executor.execute(new ClientHandler(clientSocket));
             }
-        } catch (IOException ignored) {
+        } catch (IOException e) {
+            LOGGER.info(e.getStackTrace());
         }
     }
 
