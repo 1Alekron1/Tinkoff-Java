@@ -1,9 +1,11 @@
 package edu.hw9.Task3;
 
 import java.io.File;
-import java.util.concurrent.Callable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.RecursiveTask;
 
-public class DepthFirstSearch implements Callable<Boolean> {
+public class DepthFirstSearch extends RecursiveTask<Boolean> {
 
     private final File rootDirectory;
     private final String targetFileName;
@@ -14,18 +16,26 @@ public class DepthFirstSearch implements Callable<Boolean> {
     }
 
     @Override
-    public Boolean call() {
+    protected Boolean compute() {
         return search(rootDirectory, targetFileName);
     }
 
-    public boolean search(File currentFile, String targetFileName) {
+    private boolean search(File currentFile, String targetFileName) {
         if (currentFile.isDirectory()) {
+            List<DepthFirstSearch> subtasks = new ArrayList<>();
             File[] files = currentFile.listFiles();
+
             if (files != null) {
                 for (File file : files) {
-                    if (search(file, targetFileName)) {
-                        return true;
-                    }
+                    DepthFirstSearch subtask = new DepthFirstSearch(file, targetFileName);
+                    subtasks.add(subtask);
+                    subtask.fork();
+                }
+            }
+
+            for (DepthFirstSearch subtask : subtasks) {
+                if (subtask.join()) {
+                    return true;
                 }
             }
         } else if (currentFile.getName().equals(targetFileName)) {

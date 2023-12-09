@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.concurrent.ForkJoinPool;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -107,8 +108,9 @@ public class TestTask3 {
     @DisplayName("При поиске файла в глубину, файл должен быть найден")
     void whenSearchFileInDepth_thenFileFound() throws Exception {
         DepthFirstSearch dfs = new DepthFirstSearch(new File(TEST_DIRECTORY_PATH), "file16.txt");
+        ForkJoinPool pool = new ForkJoinPool();
         System.out.println("Тест 1: Поиск файла в глубину, файл должен быть найден");
-        boolean result = dfs.call();
+        boolean result = pool.invoke(dfs);;
 
         assertTrue(result, "Ожидается, что файл будет найден");
     }
@@ -117,7 +119,8 @@ public class TestTask3 {
     @DisplayName("При поиске несуществующего файла в глубину, ничего не должно быть найдено")
     void whenSearchNonExistingFileInDepth_thenNoFileFound() throws Exception {
         DepthFirstSearch dfs = new DepthFirstSearch(new File(TEST_DIRECTORY_PATH), "nonexistent.txt");
-        boolean result = dfs.call();
+        ForkJoinPool pool = new ForkJoinPool();
+        boolean result = pool.invoke(dfs);
 
         assertFalse(result, "Ожидается, что файл не будет найден");
     }
